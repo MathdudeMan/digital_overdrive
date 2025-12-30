@@ -90,8 +90,8 @@ void OverdriveAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
 
     // Set Drive knob params
     auto& preGain = overdriveChain.template get<driveGain>();
-	preGain.setGainDecibels(30.0f);
-	//preGain.setGainDecibels(*apvts.getRawParameterValue("DRIVE"));
+	//preGain.setGainDecibels(30.0f);
+	preGain.setGainDecibels(*apvts.getRawParameterValue("DRIVE"));
 
     // Set waveshaper params
     overdriveChain.get<waveShaper>().functionToUse = [] (float x)
@@ -101,13 +101,13 @@ void OverdriveAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
 
     // Set tone knob params
 	auto& toneFilter = overdriveChain.template get<toneLowPass>();
-    *toneFilter.state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, 8000.0f);
-	//*toneFilter.state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, *apvts.getRawParameterValue("TONE"));
+    //*toneFilter.state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, 8000.0f);
+	*toneFilter.state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, *apvts.getRawParameterValue("TONE"));
 
 	// Set Level knob params
     auto& postGain = overdriveChain.template get<levelGain>();
-	postGain.setGainDecibels(-10.0f);
-	//postGain.setGainDecibels(*apvts.getRawParameterValue("LEVEL"));
+	//postGain.setGainDecibels(-10.0f);
+	postGain.setGainDecibels(*apvts.getRawParameterValue("LEVEL"));
 
     // ====================
 
