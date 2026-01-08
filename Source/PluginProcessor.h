@@ -12,6 +12,7 @@
 
 //==============================================================================
 /**
+   Audio Processor class for an Overdrive effect plugin.
 */
 class OverdriveAudioProcessor  : public juce::AudioProcessor,
 	                             private juce::ValueTree::Listener

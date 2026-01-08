@@ -6,7 +6,10 @@
   <MAINGROUP id="nAMvii" name="Overdrive">
     <GROUP id="{D3D1F924-18C1-CF7D-F88C-F5A2DA46BF93}" name="Source">
       <GROUP id="{C5E5D3DC-8ED4-5DB7-3CD0-7E0EE35F6393}" name="Processor"/>
-      <GROUP id="{CC12CD83-A33F-2C03-FEC7-4283C39DE8C1}" name="UI"/>
+      <GROUP id="{CC12CD83-A33F-2C03-FEC7-4283C39DE8C1}" name="UI">
+        <FILE id="pLpqlU" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/UI/LookAndFeel.cpp"/>
+        <FILE id="KkSPs7" name="LookAndFeel.h" compile="0" resource="0" file="Source/UI/LookAndFeel.h"/>
+      </GROUP>
       <FILE id="CclMBm" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="xx7Oit" name="PluginProcessor.h" compile="0" resource="0"

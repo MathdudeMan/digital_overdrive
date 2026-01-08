@@ -13,9 +13,14 @@
 OverdriveAudioProcessorEditor::OverdriveAudioProcessorEditor (OverdriveAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    setSize(400, 200);
+    setSize(350, 200);
+	
+	// Custom Look And Feel
+	auto* squareLAF = new CircleLookAndFeel();
+	setupSquareLookAndFeelColours(*squareLAF);
+	setLookAndFeel(squareLAF);
 
-	getLookAndFeel().setColour(juce::ResizableWindow::backgroundColourId, juce::Colours::yellow);
+	// ==========================================
 
 	// Parameter Attachments
 	using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
@@ -27,7 +32,7 @@ OverdriveAudioProcessorEditor::OverdriveAudioProcessorEditor (OverdriveAudioProc
 	
 	// ==========================================
 
-	juce::Font labelFont = juce::Font(16.0f, juce::Font::bold));
+	juce::Font labelFont = juce::Font("Bahnschrift", 16.0f, juce::Font::bold);
 
 	// Drive Knob
 	driveKnob.setSliderStyle(juce::Slider::Rotary);
@@ -35,11 +40,9 @@ OverdriveAudioProcessorEditor::OverdriveAudioProcessorEditor (OverdriveAudioProc
 	addAndMakeVisible(&driveKnob);
 
 	// Drive Label
-	driveLabel.setText("Drive", juce::dontSendNotification);
-	driveLabel.attachToComponent(&driveKnob, false);
+	driveLabel.setText("DRIVE", juce::dontSendNotification);
 	driveLabel.setFont(labelFont);
-	driveLabel.setJustificationType(juce::Justification::centred);
-	driveLabel.setColour(juce::Label::textColourId, juce::Colours::black);
+	driveLabel.setJustificationType(juce::Justification::centredTop);
 	addAndMakeVisible(driveLabel);
 
 	// Tone Knob
@@ -48,10 +51,10 @@ OverdriveAudioProcessorEditor::OverdriveAudioProcessorEditor (OverdriveAudioProc
 	addAndMakeVisible(&toneKnob);
 
 	// Tone Label
-	toneLabel.setText("Tone", juce::dontSendNotification);
+	toneLabel.setText("TONE", juce::dontSendNotification);
+	//toneLabel.attachToComponent(&toneKnob, false);
 	toneLabel.setFont(labelFont);
-	toneLabel.setJustificationType(juce::Justification::centred);
-	toneLabel.setColour(juce::Label::textColourId, juce::Colours::black);
+	toneLabel.setJustificationType(juce::Justification::centredBottom);
 	addAndMakeVisible(toneLabel);
 
 	// Level Knob
@@ -60,11 +63,9 @@ OverdriveAudioProcessorEditor::OverdriveAudioProcessorEditor (OverdriveAudioProc
 	addAndMakeVisible(&levelKnob);
 
 	// Level Label
-	levelLabel.setText("Level", juce::dontSendNotification);
-	levelLabel.attachToComponent(&levelKnob, false);
+	levelLabel.setText("LEVEL", juce::dontSendNotification);
 	levelLabel.setFont(labelFont);
-	levelLabel.setJustificationType(juce::Justification::centred);
-	levelLabel.setColour(juce::Label::textColourId, juce::Colours::black);
+	levelLabel.setJustificationType(juce::Justification::centredTop);
 	addAndMakeVisible(levelLabel);
 
 }
@@ -76,20 +77,49 @@ OverdriveAudioProcessorEditor::~OverdriveAudioProcessorEditor()
 //==============================================================================
 void OverdriveAudioProcessorEditor::paint (juce::Graphics& g)
 {
+	// Draw Background
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    g.setColour (juce::Colours::black);
-	g.setFont(juce::Font(30.0f, juce::Font::bold));
-    g.drawFittedText ("Overdrive Pedal", 0, 0, getWidth(), 30, juce::Justification::centred, 1);
+	// Draw Title
+	g.setColour(getLookAndFeel().findColour(juce::Label::textColourId));
+	g.setFont(juce::Font("Bahnschrift", 36.0f, juce::Font::bold));
+    g.drawFittedText ("OverDrive", 0, 20, getWidth(), 30, juce::Justification::centred, 1);
 }
 
 void OverdriveAudioProcessorEditor::resized()
 {
-	driveKnob.setBounds(50, 50, 100, 100);
+	int midpoint = getWidth() / 2;
 
-	toneKnob.setBounds(160, 80, 100, 100);
-	toneLabel.setBounds(210, 70, 100, 20);
+	driveKnob.setBounds(midpoint - 140, getHeight() - 140, 100, 100);
+	driveLabel.setBounds(midpoint - 140, getHeight() - 50, 100, 20);
 
-	levelKnob.setBounds(270, 50, 100, 100);
+	toneKnob.setBounds(midpoint - 50, getHeight() - 110, 100, 100);
+	toneLabel.setBounds(midpoint - 50, getHeight() - 120, 100, 20);
+
+	levelKnob.setBounds(midpoint + 40, getHeight() - 140, 100, 100);
+	levelLabel.setBounds(midpoint + 40, getHeight() - 50, 100, 20);
+
+} 
+
+// =============================================================================
+
+void OverdriveAudioProcessorEditor::setupSquareLookAndFeelColours(LookAndFeel& laf)
+{
+	auto baseColour = Colours::black;
+
+	laf.setColour(ResizableWindow::backgroundColourId, Colours::yellow);
+	laf.setColour(Label::textColourId, Colours::black);
+
+	laf.setColour(Slider::thumbColourId, Colour::greyLevel(0.95f));
+	laf.setColour(Slider::textBoxOutlineColourId, Colours::transparentWhite);
+	laf.setColour(Slider::rotarySliderFillColourId, baseColour);
+	laf.setColour(Slider::rotarySliderOutlineColourId, Colours::white);
+	laf.setColour(Slider::trackColourId, Colours::black);
+
+	laf.setColour(TextButton::buttonColourId, Colours::white);
+	laf.setColour(TextButton::textColourOffId, baseColour);
+
+	laf.setColour(TextButton::buttonOnColourId, laf.findColour(TextButton::textColourOffId));
+	laf.setColour(TextButton::textColourOnId, laf.findColour(TextButton::buttonColourId));
 
 }
