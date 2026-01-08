@@ -17,3 +17,5 @@ To build, perform the following:
 - Clone the repo and load the .jucer file in the Projucer
 - Create an exporter to open the project your local IDE and execute the build.
 
+---
+This project is open source under the MIT License.
